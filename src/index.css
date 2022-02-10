@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sha{
+  box-shadow: 5px -5px 20px 1px rgba(240,103,225,0.78),-5px 5px 10px 1px rgba(62, 193, 245, 0.78),
+  2px -2px 10px 0px rgba(97,187, 187, 1)inset ,-2px 2px 10px 0px rgba(240,103,225,0.58)inset ;
+
+  text-shadow: 2px -1px 1px rgba(240,103,225,0.78), -2px 1px 1px rgba(62, 193, 245, 0.78) ;
+
+  border-top: 2px solid rgba(238, 125, 225, 0.78) ;
+  border-right: 2px solid rgba(238, 125, 225, 0.78) ;
+  border-left: 2px solid rgba(88, 199, 243, 0.78) ;
+  border-bottom: 2px solid rgba(86, 200, 245, 0.78) ;
+
+}
+
+.sha:hover{
+  transform: scale(1.1);
+  transition:all linear;
+  box-shadow: 5px -5px 25px 2px rgba(240,103,225,0.78),-5px 5px 20px 2px rgba(62, 193, 245, 0.78);
+  transition-duration: 70ms;
+}
+
+.txt-sha{
+  text-shadow: 2px -1px 1px rgba(240,103,225,0.78), -2px 1px 1px rgba(62, 193, 245, 0.78) ;
+}
