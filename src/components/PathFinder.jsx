@@ -437,7 +437,7 @@ const myUp=()=>{
             className=' mx-auto py-4 '
           >
           </canvas>
-          <h1 id='output' className='bg-black text-white md:text-4xl text-2xl text-center w-screen txt-sha'>Press Start to Solve</h1>
+          <h1 id='output' className='bg-black text-white md:text-4xl text-2xl text-center w-screen txt-sha py-2 border-b-2 shadow-lg shadow-white'>Press Start to Solve</h1>
         </div>
       );}
 

@@ -1,5 +1,6 @@
 import PathFinder from './components/PathFinder'
 import Header from './components/Header';
+import Info from './components/Info';
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
       <main className='bg-black/90'>
         <PathFinder />
       </main>
+      <Info />
     </div>
   );
 }
