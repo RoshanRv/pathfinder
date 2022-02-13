@@ -73,10 +73,10 @@ const rect=(x,y,w,h,state)=>{
         ctx.fillStyle = 'white';
       }
       else if (state == 'w') {
-        ctx.fillStyle = '#b300b3';
+        ctx.fillStyle = '#DB91EF';
       }
       else if (state == 'x') {
-        ctx.fillStyle = '#00ace6';
+        ctx.fillStyle = '#4F86F7';
 
       }
       else {
@@ -104,7 +104,7 @@ window.onload=()=>{
         canvas.onmousedown = myDown
         canvas.onmouseup = myUp
         document.getElementById('start').addEventListener('click',()=>solve(45))
-        document.getElementById('quick').addEventListener('click',()=>solve(0))
+        document.getElementById('quick').addEventListener('click',()=>solveQuick())
         document.getElementById('restart').addEventListener('click',()=>reset())
         output = document.getElementById('output')
         return setInterval(draw,10)
@@ -284,10 +284,10 @@ const solve=(t)=>{
 
           if(pathFound || queue.length == 0){
             clearInterval(maze)
-            console.log('whooo')
             getMazeWay()
         }
     },0)
+  
 
     const mazeWay = ()=>{
         var currX=start
@@ -340,7 +340,7 @@ const solve=(t)=>{
         },t)
     }
 
-    
+
 const getMazeWay=()=>{
     if(!pathFound){
         var o = 'Every Possible Path is Blocked :-('
@@ -372,7 +372,206 @@ const getMazeWay=()=>{
             i++
         },60)
     }
-}  
+} 
+
+}
+
+
+// Quick Solve
+
+const solveQuick=()=>{
+  var queue = [[start,start]]
+  var locX
+  var locY
+
+  var pathFound = false
+
+  while(!pathFound && queue.length>0){
+
+
+      locX = queue[0][0]
+      locY = queue[0][1]
+
+      queue.shift()
+
+      if(locX>0){
+          if(tiles[locX-1][locY].state == 'f'){
+              pathFound = true
+          }
+      }
+
+      if(locX<gridColumn-1){
+          if(tiles[locX+1][locY].state == 'f'){
+              pathFound = true
+          }
+      }
+
+      if(locX < gridColumn - 1 && locY < gridRow - 1 ){
+          if(tiles[locX+1][locY+1].state == 'f'){
+            pathFound = true;
+          }
+        }
+
+        if(locX > 0 && locY < gridRow - 1 ){
+          if(tiles[locX-1][locY+1].state == 'f'){
+            pathFound = true;
+          }
+        }
+      
+        if(locX > 0 && locY >0 ){
+          if(tiles[locX-1][locY-1].state == 'f'){
+            pathFound = true;
+          }
+        }
+
+        if(locX < gridColumn - 1 && locY > 0 ){
+          if(tiles[locX+1][locY-1].state == 'f'){
+            pathFound = true;
+          }
+        }
+
+      if(locY>0){
+          if(tiles[locX][locY-1].state == 'f'){
+              pathFound = true
+          }
+      }
+
+      if(locY<gridRow-1){
+          if(tiles[locX][locY+1].state == 'f'){
+              pathFound = true
+          }
+      }
+
+      if (locX > 0) {
+          if (tiles[locX-1][locY].state == 'e') {
+            queue.push([locX-1, locY]);
+            tiles[locX-1][locY].state = tiles[locX][locY].state + 'l';
+          }
+        }
+        if (locX < gridColumn - 1) {
+          if (tiles[locX+1][locY].state == 'e') {
+            queue.push([locX+1, locY]);
+            tiles[locX+1][locY].state = tiles[locX][locY].state + 'r';
+          }
+        }
+    
+        if(locX < gridColumn - 1 && locY < gridRow - 1){
+          if(tiles[locX+1][locY+1].state == 'e'){
+            queue.push([locX+1, locY+1]);
+            tiles[locX+1][locY+1].state = tiles[locX][locY].state + 'm';
+          }
+        }
+        if(locX < gridColumn - 1 && locY > 0){
+          if(tiles[locX+1][locY-1].state == 'e'){
+            queue.push([locX+1, locY-1]);
+            tiles[locX+1][locY-1].state = tiles[locX][locY].state + 'p';
+          }
+        }
+        if(locX > 0 && locY < gridRow - 1){
+          if(tiles[locX-1][locY+1].state == 'e'){
+            queue.push([locX-1, locY+1]);
+            tiles[locX-1][locY+1].state = tiles[locX][locY].state + 'z';
+          }
+        }
+        if(locX > 0  && locY > 0){
+          if(tiles[locX-1][locY-1].state == 'e'){
+            queue.push([locX-1, locY-1]);
+            tiles[locX-1][locY-1].state = tiles[locX][locY].state + 'q';
+          }
+        }
+    
+        if (locY > 0) {
+          if (tiles[locX][locY-1].state == 'e') {
+            queue.push([locX, locY-1]);
+            tiles[locX][locY-1].state = tiles[locX][locY].state + 'u';
+          }
+        }
+        if (locY < gridRow - 1) {
+          if (tiles[locX][locY+1].state == 'e') {
+            queue.push([locX, locY+1]);
+            tiles[locX][locY+1].state = tiles[locX][locY].state + 'd';
+          }
+        }
+
+  }
+
+  const mazeWay=()=>{
+    var currX=start
+        var currY = start
+        var i=0
+        var path = tiles[locX][locY].state
+        console.log(path)
+        var pathLength = path.length
+    
+        for(i=0;i<pathLength-1;i++){
+    
+            if(path.charAt(i+1)=='u'){
+                currY-=1
+            }
+            if(path.charAt(i+1)=='p'){
+                currY-=1
+                currX+=1
+            }
+            if(path.charAt(i+1)=='r'){
+                currX+=1
+            }
+            if(path.charAt(i+1)=='m'){
+                currX+=1
+                currY+=1
+            }
+            if(path.charAt(i+1)=='d'){
+                currY+=1
+            }
+            if(path.charAt(i+1)=='z'){
+                currX-=1
+                currY+=1
+            }
+            if(path.charAt(i+1)=='l'){
+                currX-=1
+            }
+            if(path.charAt(i+1)=='q'){
+                currX-=1
+                currY-=1
+            }
+    
+            tiles[currX][currY].state = 'x'
+    
+        }
+  }
+
+  if(!pathFound){
+        var o = 'Every Possible Path is Blocked :-('
+        o=o.split('')
+        var out =''
+        var i=0
+        const dispOutput = setInterval(()=>{
+
+            out = out+o[i]
+            output.innerHTML = out
+
+            if(i>o.length-2)clearInterval(dispOutput)
+            i++
+        },30)
+
+    }
+    else{
+        mazeWay()
+        var o = 'Path Has Been Found!!! :-)'
+        o=o.split('')
+        var out =''
+        var i=0
+        const dispOutput = setInterval(()=>{
+
+            out = out+o[i]
+            output.innerHTML = out
+
+            if(i>o.length-2)clearInterval(dispOutput)
+            i++
+        },30)
+    }
+
+
+      
 }
 
 const reset=()=>{
@@ -406,7 +605,7 @@ const myUp=()=>{
 }
     
       return (
-        <div>
+        <div className='bg-black/90'>
             <div className="grid grid-cols-3 md:flex items-center justify-around py-2 pt-4 text-white txt-sha ">
               <div className="text-center">
                   <div className="w-6 h-6 bg-[#80ff80] border-2  mx-auto"></div>
@@ -417,7 +616,7 @@ const myUp=()=>{
                   <p>End</p>
               </div>
               <div className="text-center">
-                  <div className="w-6 h-6 bg-[#b300b3] border-2 mx-auto"></div>
+                  <div className="w-6 h-6 bg-[#DB91EF] border-2 mx-auto"></div>
                   <p>Wall</p>
               </div>
               <div className="text-center col-span-2">
@@ -425,7 +624,7 @@ const myUp=()=>{
                   <p>Explored Nodes</p>
               </div>
               <div className="text-center">
-                  <div className="w-6 h-6 bg-[#00ace6] border-2 mx-auto"></div>
+                  <div className="w-6 h-6 bg-[#4F86F7] border-2 mx-auto"></div>
                   <p>Shortest Path</p>
               </div>
               
@@ -434,10 +633,10 @@ const myUp=()=>{
             id="myCanvas"
             width={Width}
             height={Height}
-            className=' mx-auto py-4 '
+            className=' mx-auto py-4 pb-2 '
           >
           </canvas>
-          <h1 id='output' className='bg-black text-white md:text-4xl text-2xl text-center w-screen txt-sha py-2 border-b-2 shadow-lg shadow-white'>Press Start to Solve</h1>
+          <h1 id='output' className='bg-black text-white md:text-4xl text-2xl text-center w-screen txt-sha py-2 border-b-2 border-t-2 shadow-md shadow-white'>Press Start to Solve</h1>
         </div>
       );}
 
